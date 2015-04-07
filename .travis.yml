@@ -1,12 +1,8 @@
 language: objective-c
-xcode_workspace: SourceKitten.xcworkspace
-xcode_scheme: sourcekitten
 osx_image: xcode611
 before_install: true
-install: true
-git:
-  submodules: false
-script: BUILD_TOOL=xctool script/cibuild
+install: brew install xctester
+script: make test
 notifications:
   email: false
   slack: realmio:vPdpsG9NLDo2DNlbqtcMAQuE

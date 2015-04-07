@@ -24,7 +24,7 @@ bootstrap:
 	pod install --no-repo-update --no-integrate
 
 test: clean bootstrap
-	$(BUILD_TOOL) $(XCODEFLAGS) test
+	./test.sh
 
 clean:
 	rm -f "$(OUTPUT_PACKAGE)"

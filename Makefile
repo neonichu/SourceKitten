@@ -1,11 +1,10 @@
 TEMPORARY_FOLDER?=/tmp/SourceKitten.dst
 PREFIX?=/usr/local
 
-BUILT_BUNDLE=$(TEMPORARY_FOLDER)/Applications/sourcekitten.app
-SOURCEKITTEN_FRAMEWORK_BUNDLE=$(BUILT_BUNDLE)/Contents/Frameworks/SourceKittenFramework.framework
-COMMANDANT_FRAMEWORK_BUNDLE=$(BUILT_BUNDLE)/Contents/Frameworks/Commandant.framework
-LLAMAKIT_FRAMEWORK_BUNDLE=$(BUILT_BUNDLE)/Contents/Frameworks/LlamaKit.framework
-SOURCEKITTEN_EXECUTABLE=$(BUILT_BUNDLE)/Contents/MacOS/sourcekitten
+SOURCEKITTEN_FRAMEWORK_BUNDLE=$(PWD)/Rome/SourceKittenFramework.framework
+COMMANDANT_FRAMEWORK_BUNDLE=$(PWD)/Rome/Commandant.framework
+LLAMAKIT_FRAMEWORK_BUNDLE=$(PWD)/Rome/LlamaKit.framework
+SOURCEKITTEN_EXECUTABLE=$(PWD)/sourcekitten
 
 FRAMEWORKS_FOLDER=/Library/Frameworks
 BINARIES_FOLDER=/usr/local/bin
@@ -40,15 +39,12 @@ uninstall:
 	rm -rf "$(FRAMEWORKS_FOLDER)/LlamaKit.framework"
 	rm -f "$(BINARIES_FOLDER)/sourcekitten"
 
-installables: clean bootstrap
-	$(BUILD_TOOL) $(XCODEFLAGS) install
-
+installables: clean all
 	mkdir -p "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
 	mv -f "$(SOURCEKITTEN_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/SourceKittenFramework.framework"
 	mv -f "$(COMMANDANT_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Commandant.framework"
 	mv -f "$(LLAMAKIT_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/LlamaKit.framework"
 	mv -f "$(SOURCEKITTEN_EXECUTABLE)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/sourcekitten"
-	rm -rf "$(BUILT_BUNDLE)"
 
 prefix_install: installables
 	mkdir -p "$(PREFIX)/Frameworks" "$(PREFIX)/bin"

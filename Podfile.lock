@@ -1,0 +1,24 @@
+PODS:
+  - Commandant (0.3):
+    - LlamaKit (~> 0.5.0)
+  - LlamaKit (0.5.0)
+  - SourceKitten (0.3.2):
+    - Commandant (~> 0.3.0)
+    - LlamaKit (~> 0.5.0)
+    - SwiftXPC
+  - SwiftXPC (0.0.2)
+
+DEPENDENCIES:
+  - SourceKitten (from `.`)
+
+EXTERNAL SOURCES:
+  SourceKitten:
+    :path: .
+
+SPEC CHECKSUMS:
+  Commandant: 75d12ba0fa5bb3e47bfa0a0d4f87e5ac52f18dd8
+  LlamaKit: e8ebef916475530de5f6ea1b1e5aebe6a11ddd2e
+  SourceKitten: ea8b44e37bc1584601bb42fc75c4f0f61a450456
+  SwiftXPC: b86019e2a3608f4469b5a0e16a668034724f4485
+
+COCOAPODS: 0.36.3

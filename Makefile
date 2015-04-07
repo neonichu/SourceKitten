@@ -1,8 +1,5 @@
 TEMPORARY_FOLDER?=/tmp/SourceKitten.dst
 PREFIX?=/usr/local
-BUILD_TOOL?=xcodebuild
-
-XCODEFLAGS=-workspace 'SourceKitten.xcworkspace' -scheme 'sourcekitten' DSTROOT=$(TEMPORARY_FOLDER)
 
 BUILT_BUNDLE=$(TEMPORARY_FOLDER)/Applications/sourcekitten.app
 SOURCEKITTEN_FRAMEWORK_BUNDLE=$(BUILT_BUNDLE)/Contents/Frameworks/SourceKittenFramework.framework
@@ -24,7 +21,7 @@ all: bootstrap
 	$(BUILD_TOOL) $(XCODEFLAGS) build
 
 bootstrap:
-	script/bootstrap
+	pod install --no-repo-update --no-integrate
 
 test: clean bootstrap
 	$(BUILD_TOOL) $(XCODEFLAGS) test
@@ -32,7 +29,6 @@ test: clean bootstrap
 clean:
 	rm -f "$(OUTPUT_PACKAGE)"
 	rm -rf "$(TEMPORARY_FOLDER)"
-	$(BUILD_TOOL) $(XCODEFLAGS) clean
 
 install: package
 	sudo installer -pkg SourceKitten.pkg -target /

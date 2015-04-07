@@ -18,3 +18,5 @@ DerivedData
 *.xcuserstate
 
 SourceKitten.pkg
+Pods
+Rome

@@ -15,7 +15,7 @@ struct DocCommand: CommandType {
     let verb = "doc"
     let function = "Print Swift docs as JSON or Objective-C docs as XML"
 
-    func run(mode: CommandMode) -> Result<()> {
+    func run(mode: CommandMode) -> Result<(), CommandantError> {
         return DocOptions.evaluate(mode).flatMap { options in
             let args = Process.arguments
             if options.objc {
@@ -29,7 +29,7 @@ struct DocCommand: CommandType {
         }
     }
 
-    static func runSwiftModule(moduleName: String?, args: [String]) -> Result<()> {
+    static func runSwiftModule(moduleName: String?, args: [String]) -> Result<(), CommandantError> {
         let xcodeBuildArgumentsStart = (moduleName != nil) ? 4 : 2
         let xcodeBuildArguments = Array<String>(args[xcodeBuildArgumentsStart..<args.count])
         let module = Module(xcodeBuildArguments: xcodeBuildArguments, name: moduleName)
@@ -47,7 +47,7 @@ struct DocCommand: CommandType {
         return failure(SourceKittenError.DocFailed.error)
     }
 
-    static func runSwiftSingleFile(args: [String]) -> Result<()> {
+    static func runSwiftSingleFile(args: [String]) -> Result<(), CommandantError> {
         if args.count < 5 {
             return failure(SourceKittenError.InvalidArgument(description: "at least 5 arguments are required when using `--single-file`").error)
         }
@@ -60,7 +60,7 @@ struct DocCommand: CommandType {
         return failure(SourceKittenError.ReadFailed(path: args[3]).error)
     }
 
-    static func runObjC(options: DocOptions, args: [String]) -> Result<()> {
+    static func runObjC(options: DocOptions, args: [String]) -> Result<(), CommandantError> {
         if args.count < 5 {
             return failure(SourceKittenError.InvalidArgument(description: "at least 5 arguments are required when using `--objc`").error)
         }
@@ -86,7 +86,7 @@ struct DocOptions: OptionsType {
         return self(singleFile: singleFile, moduleName: moduleName, objc: objc)
     }
 
-    static func evaluate(m: CommandMode) -> Result<DocOptions> {
+    static func evaluate(m: CommandMode) -> Result<DocOptions, CommandantError> {
         return create
             <*> m <| Option(key: "single-file", defaultValue: false, usage: "only document one file")
             <*> m <| Option(key: "module-name", defaultValue: "",    usage: "name of module to document (can't be used with `--single-file` or `--objc`)")

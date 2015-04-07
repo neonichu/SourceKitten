@@ -15,7 +15,7 @@ struct StructureCommand: CommandType {
     let verb = "structure"
     let function = "Print Swift structure information as JSON"
 
-    func run(mode: CommandMode) -> Result<()> {
+    func run(mode: CommandMode) -> Result<(), CommandantError> {
         return StructureOptions.evaluate(mode).flatMap { options in
             if countElements(options.file) > 0 {
                 if let file = File(path: options.file.absolutePathRepresentation()) {
@@ -42,7 +42,7 @@ struct StructureOptions: OptionsType {
         return self(file: file, text: text)
     }
 
-    static func evaluate(m: CommandMode) -> Result<StructureOptions> {
+    static func evaluate(m: CommandMode) -> Result<StructureOptions, CommandantError> {
         return create
             <*> m <| Option(key: "file", defaultValue: "", usage: "relative or absolute path of Swift file to parse")
             <*> m <| Option(key: "text", defaultValue: "", usage: "Swift code text to parse")

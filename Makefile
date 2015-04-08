@@ -2,6 +2,7 @@ TEMPORARY_FOLDER?=/tmp/SourceKitten.dst
 PREFIX?=/usr/local
 
 SOURCEKITTEN_FRAMEWORK_BUNDLE=$(PWD)/Rome/SourceKittenFramework.framework
+SWIFTXPC_FRAMEWORK_BUNDLE=$(PWD)/Rome/SwiftXPC.framework
 COMMANDANT_FRAMEWORK_BUNDLE=$(PWD)/Rome/Commandant.framework
 LLAMAKIT_FRAMEWORK_BUNDLE=$(PWD)/Rome/LlamaKit.framework
 SOURCEKITTEN_EXECUTABLE=$(PWD)/sourcekitten
@@ -11,7 +12,7 @@ BINARIES_FOLDER=/usr/local/bin
 
 OUTPUT_PACKAGE=SourceKitten.pkg
 
-VERSION_STRING=$(shell agvtool what-marketing-version -terse1)
+VERSION_STRING=$(shell pod ipc spec SourceKitten.podspec|grep version|cut -d\" -f4)
 COMPONENTS_PLIST=Source/sourcekitten/Components.plist
 
 .PHONY: all bootstrap clean install package test uninstall lint
@@ -42,6 +43,7 @@ uninstall:
 installables: clean all
 	mkdir -p "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
 	mv -f "$(SOURCEKITTEN_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/SourceKittenFramework.framework"
+	mv -f "$(SWIFTXPC_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/SwiftXPC.framework"
 	mv -f "$(COMMANDANT_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/Commandant.framework"
 	mv -f "$(LLAMAKIT_FRAMEWORK_BUNDLE)" "$(TEMPORARY_FOLDER)$(FRAMEWORKS_FOLDER)/LlamaKit.framework"
 	mv -f "$(SOURCEKITTEN_EXECUTABLE)" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/sourcekitten"
